@@ -1,7 +1,7 @@
 # TIGER
 TIGER (<b>T</b>ransformer-based h<b>I</b>stology-driven <b>G</b>ene <b>E</b>xpression <b>R</b>egressor) is a pipeline to accurately reconstruct gene expression and gene expression signatures from digital histology. These histology derived gene expression signatures can be used to preidct prognosis, chemotherapy response, and response to specific therapies.
 
-<img src='https://github.com/fmhoward/TIGER/blob/main/tiger.png?raw=true'>
+<img src='https://github.com/fmhoward/TIGER/blob/main/TIGER.png?raw=true'>
 
 ## Attribution
 If you use this code in your work or find it helpful, please consider citing our paper in <a href=''>bioRxiv</a>.
