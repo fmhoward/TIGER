@@ -25,7 +25,6 @@ def _compute_rollout(all_layer_matrices, start_layer=0):
             if matrices_aug[i].shape[2] > 5000:
                 results = []
                 chunk_size = 1000
-                print(matrices_aug[i].shape)
                 results = []
                 if i == len(matrices_aug) - 1:
                     for chunk in torch.split(matrices_aug[i], 5000, dim = 1):

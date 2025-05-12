@@ -10,11 +10,39 @@ from packaging import version
 from fastai.vision.all import (
     DataLoader, DataLoaders, Learner, RocAuc, PearsonCorrCoef, SaveModelCallback, CSVLogger, FetchPredsCallback
 )
+from fastai.torch_basics import *
 
 from slideflow import log
 import slideflow.mil.data as data_utils
 from slideflow.model import torch_utils
 from .._params import TrainerConfigFastAI, ModelConfigCLAM
+from fastai.metrics import AccumMetric
+
+import scipy.stats as scs
+
+# %% ../nbs/13b_metrics.ipynb 100
+@delegates(AccumMetric)
+def MultiPearsonCorrCoef(dim_argmax=None, **kwargs):
+    "Pearson correlation coefficient for regression problem"
+    
+    def pearsonr(x,y): 
+        mean_r = 0
+        count_r = 0
+        if len(y.shape) > 1:
+            for i in range(len(x[0])):
+                r = scs.pearsonr(x[:, i], y[:, i])[0]
+                import math
+                
+                if not math.isnan(r):
+                    mean_r += r
+                    count_r += 1
+            return mean_r/count_r
+        else:
+            return scs.pearsonr(x, y)[0]
+        #return scs.pearsonr(x,y)[0]
+    return AccumMetric(pearsonr, invert_arg=False, flatten=False, dim_argmax=dim_argmax, **kwargs)
+
+
 
 # -----------------------------------------------------------------------------
 
@@ -265,8 +293,6 @@ def _build_fastai_learner(
     # Prepare model.
     batch = train_dl.one_batch()
     n_in, n_out = batch[0].shape[-1], batch[-1].shape[-1]
-    log.info(f"Training model [bold]{config.model_fn.__name__}[/] "
-             f"(in={n_in}, out={n_out}, loss={config.loss_fn.__name__})")
     model = config.build_model(n_in, n_out).to(device)
     if hasattr(model, 'relocate'):
         model.relocate()
@@ -286,7 +312,10 @@ def _build_fastai_learner(
         metrics = [RocAuc()]
     else:
         loss_func = nn.MSELoss()
-        metrics = [PearsonCorrCoef()]
+        metrics = [MultiPearsonCorrCoef()]
+    log.info(f"Training model [bold]{config.model_fn.__name__}[/] "
+             f"(in={n_in}, out={n_out}, loss={config.loss_fn.__name__})")
+
     # Create learning and fit.
     dls = DataLoaders(train_dl, val_dl)
     learner = Learner(dls, model, loss_func=loss_func, metrics=metrics, path=outdir)
@@ -343,9 +372,6 @@ def _build_fastai_learner_gcn(
     else:
         encoder = None
     # Build dataloaders.
-    print("Edges:")
-    print(edges)
-    print("Done")
     train_dataset = data_utils.build_dataset_gcn(
         bags[train_idx],
         edges[train_idx],
@@ -384,8 +410,7 @@ def _build_fastai_learner_gcn(
     # Prepare model.
     batch = train_dl.one_batch()
     n_in, n_out = batch[0].shape[-1], batch[-1].shape[-1]
-    log.info(f"Training model [bold]{config.model_fn.__name__}[/] "
-             f"(in={n_in}, out={n_out}, loss={config.loss_fn.__name__})")
+
     model = config.build_model(n_in, n_out).to(device)
     if hasattr(model, 'relocate'):
         model.relocate()
@@ -405,7 +430,9 @@ def _build_fastai_learner_gcn(
         metrics = [RocAuc()]
     else:
         loss_func = nn.MSELoss()
-        metrics = [PearsonCorrCoef()]
+        metrics = [MultiPearsonCorrCoef()]
+    log.info(f"Training model [bold]{config.model_fn.__name__}[/] "
+             f"(in={n_in}, out={n_out}, loss={config.loss_fn.__name__})")
     # Create learning and fit.
     dls = DataLoaders(train_dl, val_dl)
     learner = Learner(dls, model, loss_func=loss_func, metrics=metrics, path=outdir)

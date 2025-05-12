@@ -229,16 +229,9 @@ def _eval_mil(
         else:
             raise ValueError("Malformed dataframe; cannot find 'slide' or 'patient' column.")
         _export_attention(join(model_dir, 'attention'), y_att, slides_or_patients)
-    print(df)
-    print(df.columns)
-    print(y_pred_cols)
     y_pred_cols = [c for c in df.columns if c.startswith('y_pred') or c.startswith('ypred')]
-    print(y_pred_tiles)
-    print(len(y_pred_tiles[:, 0]))
-    print(y_att)
     # Attention heatmaps
     if outdir and y_att and attention_heatmaps:
-        print(join(model_dir, 'heatmaps'))
         generate_attention_heatmaps(
             outdir=join(model_dir, 'heatmaps'),
             dataset=dataset,
@@ -1029,7 +1022,6 @@ def generate_attention_heatmaps(
             slidename = sf.util.path_to_name(bag)
             slide_path = dataset.find_slide(slide=slidename)
             locations_file = join(dirname(bag), f'{slidename}.index.npz')
-            print(locations_file)
             npy_loc_file = locations_file[:-1] + 'y'
             if slide_path is None:
                 log.info(f"Unable to find slide {slidename}")
