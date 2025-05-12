@@ -8,7 +8,7 @@ If you use this code in your work or find it helpful, please consider citing our
 ```
 
 ## Installation
-This github repository should be downloaded to a project directory. Installation takes < 5 minutes on a standard desktop computer. Runtime for HistoXGAN training across the entire TCGA dataset requires approximately 72 hours to run for 25,000 kimg on 4 A100 GPUs. Subsequent generation of images with the trained HistoXGAN network occurs in < 1 second per image. All software was tested on CentOS 8 with an AMD EPYC 7302 16-Core Processor and 4x A100 SXM 40 GB GPUs.
+This github repository should be downloaded to a project directory. Installation takes < 5 minutes on a standard desktop computer. Runtime for training our signature models on the TCGA training dataset requires approximately 5 minutes for 8 epochs on 1 A100 GPU. Subsequent predictions for inference can be run in approximately 1 minute. All software was tested on CentOS 8 with an AMD EPYC 7302 16-Core Processor and 4x A100 SXM 40 GB GPUs.
 
 Requirements:
 * python 3.8
