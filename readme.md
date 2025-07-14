@@ -1,5 +1,5 @@
 # <img src='https://github.com/fmhoward/TIGER/blob/main/TIGER.png?raw=true' height = 80px>
-TIGER (<b>T</b>ransformer-based h<b>I</b>stology-driven <b>G</b>ene <b>E</b>xpression <b>R</b>egressor) is a pipeline to accurately reconstruct gene expression and gene expression signatures from digital histology. These histology derived gene expression signatures can be used to preidct prognosis, chemotherapy response, and response to specific therapies.
+SlideFlow - TIGER (<b>T</b>ransformer-based h<b>I</b>stology-driven <b>G</b>ene <b>E</b>xpression <b>R</b>egressor) is a pipeline to accurately reconstruct gene expression and gene expression signatures from digital histology. These histology derived gene expression signatures can be used to preidct prognosis, chemotherapy response, and response to specific therapies.
 
 
 ## Attribution
@@ -115,3 +115,104 @@ The predictions can then be loaded from the generated prediction parquet file an
 ```
 pd = read_parquet(".../mil/00001-bistro.transformer/predictions.parquet")
 ```
+
+### Clinically Applicable Thresholds for Response Prediction
+We demonstrate here, using the UChicago cohort, predicting response using the IIE signature as per our manuscript.
+
+```
+import pandas as pd
+import json
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+
+# Load data
+with open(".../signature_QC_model/mil_params.json") as f: 
+    d = json.load(f)
+df1 = pd.read_csv('.../UCMC_NAC/uc_anon_annotations.csv') #Annotations from repository
+df1['patient'] = df1['patient'].astype(str)
+df2 = pd.read_parquet('.../mil/00001-bistro.transformer/predictions.parquet') #Predictions saved from applying the signature model, as above
+df2['slide'] = df2['slide'].astype(str)
+df2.columns = ['patient', 'ytrue0'] + d['outcomes']
+df2 = df2.merge(df1, on='patient', how='left')
+
+# Define cutoffs (from HER2- subgroup in ISPY2, as per the manuscript)
+cutoff_low = 0.09502943599999958 
+cutoff_high = 0.92616612
+
+# Generate subgroups based on cutoffs of the IIE Signature
+df2['response_group'] = pd.cut(
+    df2['Scorr_IIE_Correlation_JCO.2006_PMID.16505416'],
+    bins=[-np.inf, cutoff_low, cutoff_high, np.inf],
+    labels=['low', 'mid', 'high']
+)
+
+# Define subgroups of receptor status
+def get_subgroup_mask(df, group_name):
+    if group_name == 'Overall':
+        return True
+    if group_name == 'HER2-':
+        return df['HER2'] == 'Negative'
+    elif group_name == 'HR+/HER2-':
+        return (df['HER2'] == 'Negative') & (df['HR'] == 'Positive')
+    elif group_name == 'TNBC':
+        return (df['HER2'] == 'Negative') & (df['HR'] == 'Negative')
+    elif group_name == 'HER2+':
+        return df['HER2'] == 'Positive'
+    elif group_name == 'All':
+        return pd.Series([True] * len(df))
+    else:
+        raise ValueError(f"Unknown group: {group_name}")
+
+groups = ['Overall', 'HER2-', 'HR+/HER2-', 'TNBC', 'HER2+']
+group_labels = {
+    'Overall': 'UChicago, All Patients',
+    'HER2-': 'UChicago HER2-',
+    'HR+/HER2-': 'UChicago HR+/HER2-',
+    'TNBC': 'UChicago TNBC',
+    'HER2+': 'UChicago HER2+'
+}
+
+# --- Collect pCR rates ---
+result_frames = {'low': {}, 'mid': {}, 'high': {}}
+for group in groups:
+    mask = get_subgroup_mask(df2, group)
+    for rgroup in ['low', 'mid', 'high']:
+        subset = df2[(df2['response_group'] == rgroup) & mask]
+        mean_pcr = subset['pCR'].mean() if not subset.empty else np.nan
+        result_frames[rgroup][group_labels[group]] = mean_pcr
+
+# Convert to DataFrames
+df_low = pd.DataFrame.from_dict(result_frames['low'], orient='index', columns=['pCR_low'])
+df_mid = pd.DataFrame.from_dict(result_frames['mid'], orient='index', columns=['pCR_mid'])
+df_high = pd.DataFrame.from_dict(result_frames['high'], orient='index', columns=['pCR_high'])
+
+# --- Plotting ---
+def plot_bargraph(ax):
+    row_order = ['UChicago HER2+', 'UChicago TNBC', 'UChicago HR+/HER2-', 'UChicago HER2-', 'UChicago, All Patients']
+    x = np.arange(len(row_order)) * 3
+
+    df_low_re = df_low.reindex(row_order)
+    df_mid_re = df_mid.reindex(row_order)
+    df_high_re = df_high.reindex(row_order)
+
+    cmap = matplotlib.colormaps.get_cmap('Blues')
+
+    ax.barh(x - 0.8, df_low_re['pCR_low'] + 0.01, color=cmap(0.3), edgecolor='black', label='Low')
+    ax.barh(x, df_mid_re['pCR_mid'] + 0.01, color=cmap(0.6), edgecolor='black', label='Mid')
+    ax.barh(x + 0.8, df_high_re['pCR_high'] + 0.01, color=cmap(0.9), edgecolor='black', label='High')
+
+    ax.set_yticks(x)
+    ax.set_yticklabels(row_order)
+    ax.set_xlim([0, 1])
+    ax.set_xlabel("pCR Rate")
+    ax.legend(title="Predicted Response", loc='upper right', framealpha = 1)
+
+fig, ax = plt.subplots(figsize=(7, 5), dpi=300)
+plot_bargraph(ax)
+plt.tight_layout()
+plt.show()
+```
+
+The resulting plot demonstrates the clinically relevant differences in response identified by groups of predicted IIE signature in the UChicago cohort, both overall as well as in subgroups based on receptor status.
+<img src='https://github.com/fmhoward/TIGER/blob/main/bar.png?raw=true' height = 80px>
