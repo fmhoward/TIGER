@@ -215,4 +215,5 @@ plt.show()
 ```
 
 The resulting plot demonstrates the clinically relevant differences in response identified by groups of predicted IIE signature in the UChicago cohort, both overall as well as in subgroups based on receptor status.
-<img src='https://github.com/fmhoward/TIGER/blob/main/bar.png?raw=true' height = 80px>
+
+<img src='https://github.com/fmhoward/TIGER/blob/main/bar.png?raw=true' height = 300px>
