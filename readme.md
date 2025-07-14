@@ -72,7 +72,7 @@ The trained models can subsequently be used for gene expression inference on ext
 predict_mil(model = "/path/to/trained_model/",config=config, dataset=external_dataset, outcomes = gene_list, bags = external_bag_dir) 
 ```
 
-## Validation in the University of Chicago Cohort
+## Validation for Response Prediction in the University of Chicago Cohort and Other Cohorts
 ### Patch Generation and Feature Extraction
 We have provided extracted features from University of Chicago neoadjuvant cohort to illustrate associations of gene signature predictions with response in the /UCMC_NAC/ directory. Tile images can be extracted in an identical fashion
 
