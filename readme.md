@@ -23,7 +23,7 @@ Requirements:
 
 For full environment used for model testing please see the environment.yml file
 
-### Comparison of TIGER to Recent Methodologies for Gene Expression Prediction. 
+## Comparison of TIGER to Recent Methodologies for Gene Expression Prediction. 
 Visualizing synthetic histology from a feature vector is easily performed with HistoXGAN; the included models allow for visualization of CTransPath and RetCCL feature vectors.
 Trained models used in this work are available at https://doi.org/10.5281/zenodo.10892176. The trained HistoXGAN models alone can be downloaded from the FINAL_MODELS.rar folder in this Zenodo repository; or the trained models in conjunction with other supplemental data used to evaluate HistoXGAN can be downloaded from the HistoXGAN.rar folder.
 
@@ -72,18 +72,41 @@ The trained models can subsequently be used for gene expression inference on ext
 predict_mil(model = "/path/to/trained_model/",config=config, dataset=external_dataset, outcomes = gene_list, bags = external_bag_dir) 
 ```
 
+## Validation in the University of Chicago Cohort
+### Patch Generation and Feature Extraction
+We have provided extracted features from University of Chicago neoadjuvant cohort to illustrate associations of gene signature predictions with response in the /UCMC_NAC/ directory. Tile images can be extracted in an identical fashion
 
+Tile images were extracted from this cohort with the Slideflow architecture using Otsu thresholding and Gaussian Blur based filtering at an effective magnification of 10X. 
+```
+import slideflow as sf
+P = sf.Project("".../PROJECTS/SIGNATURE_PREDICTIONS/") # A slideflow project directory as per <a href = 'https://slideflow.dev/project_setup/'>https://slideflow.dev/project_setup/</a>
+P.annotations = ".../TIGER/UCMC_NAC/uc_anon_annotations.csv"
+P.sources = ["UCMC_NAC"] # specifies the dataset location
+dataset = P.dataset(tile_px=224, tile_um=224)
+qc = [
+  qc.Otsu(),
+  qc.GaussianV2()
+]
+dataset.extract_tiles(qc=qc, roi_method = 'ignore')
+```
+
+UNI features were then extracted and uploaded.
+```
+from slideflow.model import build_feature_extractor
+ctranspath = build_feature_extractor('uni', weights = "...directory of uni weights...")
+P.generate_feature_bags(ctranspath, dataset, outdir = 'UCMC_NAC')
+```
 
 ### Application of Gene Signatures in Breast Cancer for Outcome Prediction
-A trained model for gene signature prediction is available <a href='github.com/fmhoward/TIGER/tree/main/signature_QC_model'>here</a>. Predictions can then be made on a per patient basis for these signatures as follows:
+A trained model for gene signature prediction is available <a href='github.com/fmhoward/TIGER/tree/main/signature_QC_model'>here</a>. Predictions can then be made on a per patient basis for these signatures as illustrated below for the UCMC cohort:
 
 ```
 config = mil_config('bistro.transformer', outcome_type="continuous", aggregation_level="patient", apply_softmax = False)
-dataset = P.dataset(tile_px=224, tile_um= 224)
+dataset = P.dataset(tile_px=224, tile_um=224)	
 eval_mil(weights = ".../MODELS/signature_QC_model/",
 	dataset= dataset
-	outcomes = true_signatures,
-	bags = bags,
+	outcomes = ['pCR'],
+	bags = ".../UCMC_NAC/",
 	config = config)
 ```
 
