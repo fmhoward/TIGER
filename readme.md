@@ -1,5 +1,5 @@
 # <img src='https://github.com/fmhoward/TIGER/blob/main/TIGER.png?raw=true' height = 80px>
-SlideFlow - TIGER (<b>T</b>ransformer-based h<b>I</b>stology-driven <b>G</b>ene <b>E</b>xpression <b>R</b>egressor) is a pipeline to accurately reconstruct gene expression and gene expression signatures from digital histology. These histology derived gene expression signatures can be used to preidct prognosis, chemotherapy response, and response to specific therapies.
+SlideFlow - TIGER (<b>T</b>ransformer-based h<b>I</b>stology-driven <b>G</b>ene <b>E</b>xpression <b>R</b>egressor) is a pipeline to accurately reconstruct gene expression and gene expression signatures from digital histology. These histology derived gene expression signatures can be used to predict prognosis, chemotherapy response, and response to specific therapies.
 
 
 ## Attribution
