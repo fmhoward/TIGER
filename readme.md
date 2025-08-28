@@ -90,7 +90,7 @@ predict_mil(model = "/path/to/trained_model/",config=config, dataset=external_da
 
 ## Validation for Response Prediction in the University of Chicago Cohort and Other Cohorts
 ### Patch Generation and Feature Extraction
-We have provided extracted features from University of Chicago neoadjuvant cohort to illustrate associations of gene signature predictions with response in the /UCMC_NAC/ directory. Tile images can be extracted in an identical fashion
+We have provided extracted UNI features from University of Chicago neoadjuvant cohort to illustrate associations of gene signature predictions with response in the /UCMC_NAC/ directory. Tile images can be extracted in an identical fashion
 
 Tile images were extracted from this cohort with the Slideflow architecture using Otsu thresholding and Gaussian Blur based filtering at an effective magnification of 10X. 
 ```
