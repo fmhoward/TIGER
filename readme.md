@@ -3,8 +3,24 @@ SlideFlow - TIGER (<b>T</b>ransformer-based h<b>I</b>stology-driven <b>G</b>ene 
 
 
 ## Attribution
-If you use this code in your work or find it helpful, please consider citing our paper in <a href=''>bioRxiv</a>.
+If you use this code in your work or find it helpful, please consider citing our paper in <a href='https://www.medrxiv.org/content/10.1101/2025.08.25.25334393v1'>medRxiv</a>.
 ```
+@misc{howard_integration_2025,
+	title = {Integration of {Digital} {Histology} and {Gene} {Expression} to {Predict} {Treatment}-{Specific} {Responses} in {Breast} {Cancer}},
+	copyright = {© 2025, Posted by Cold Spring Harbor Laboratory. This pre-print is available under a Creative Commons License (Attribution-NonCommercial-NoDerivs 4.0 International), CC BY-NC-ND 4.0, as described at http://creativecommons.org/licenses/by-nc-nd/4.0/},
+	url = {https://www.medrxiv.org/content/10.1101/2025.08.25.25334393v1},
+	doi = {10.1101/2025.08.25.25334393},
+	abstract = {Deep learning models applied to digital histology can predict gene expression signatures (GES) and offer a low-cost, rapidly available alternative to molecular testing at the time of diagnosis. We optimized transformer-based models to infer GES results and applied this approach to pre-treatment H\&E-stained biopsies from 1,940 breast cancer patients treated with neoadjuvant chemotherapy in clinical trial and real-world cohorts. The most predictive histology-derived GES for pathologic complete response (pCR) in the I-SPY2 trial was validated in four external cohorts: CALGB 40601, CALGB 40603, a trial of durvalumab plus CT, and standard-of-care CT-treated patients from the University of Chicago. Among HER2-negative patients, a transformer-based model trained using a signature composed of estrogen-regulated genes, proliferation, apoptosis, and interferon response genes predicted pCR with an AUC of 0.794, outperforming models based on clinical features alone (AUC 0.704, p = 0.001), pathologist TIL assessment, and a model trained directly to predict response from I-SPY2 cases. Tertiles of this signature stratify patients into clinically relevant groups with increasing likelihood of complete response, with pCR rates ≥50\% in the top tertile regardless of treatment or hormone receptor status. Additional transformer-based signature models predicted response to specific therapies (but not chemotherapy alone), including a HER2 signaling signature in IO-treated patients, and a claudin-low signature in bevacizumab treated patients. In HER2- cohorts with available gene expression data and histology, models trained on expression data performed similarly to digital histology predictions, but the combination of gene expression and histology outperformed histology alone. These findings suggest that histology-based GES provides additive information to RNA sequencing data and can inform precision treatment selection across breast cancer subtypes.},
+	language = {en},
+	urldate = {2025-08-28},
+	publisher = {medRxiv},
+	author = {Howard, Frederick M. and Dolezal, James M. and Hieromnimon, Hanna M. and Venters, Sara and Kochanny, Sara E. and Li, Anran and Borowsky, Alexander D. and Symmans, W. Fraser and Wolf, Denise and Brown-Swigart, Lamorna and Sun, Anthony and Basu, Amrita and Hirst, Gillian L. and Nguyen, Long C. and Asare, Adam and Kanaparthi, Sai and Khramtsova, Galina F. and Blenman, Kim R. M. and Shan, Naing Lin and Fan, Cheng and Tolaney, Sara M. and Somlo, George and Hudis, Clifford A. and Sikov, William M. and McCart, Linda M. and Watson, Mark A. and Carey, Lisa A. and Stover, Daniel G. and Veer, Laura J. van't and Esserman, Laura J. and Perou, Charles M. and Pusztai, Lajos and Olopade, Olufunmilayo I. and Huo, Dezheng and Nanda, Rita and Pearson, Alexander T.},
+	month = aug,
+	year = {2025},
+	note = {ISSN: 3067-2007
+Pages: 2025.08.25.25334393},
+}
+
 ```
 
 ## Installation
