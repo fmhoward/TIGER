@@ -20,9 +20,8 @@ If you use this code in your work or find it helpful, please consider citing our
 	note = {ISSN: 3067-2007
 Pages: 2025.08.25.25334393},
 }
-
-This code is available under a Creative Commons License (Attribution-NonCommercial-NoDerivs 4.0 International), CC BY-NC-ND 4.0, as described at http://creativecommons.org/licenses/by-nc-nd/4.0/
 ```
+This code is available under a Creative Commons License (Attribution-NonCommercial-NoDerivs 4.0 International), CC BY-NC-ND 4.0, as described at http://creativecommons.org/licenses/by-nc-nd/4.0/
 
 ## Installation
 This github repository should be downloaded to a project directory. Installation takes < 5 minutes on a standard desktop computer. Runtime for training our signature models on the TCGA training dataset requires approximately 5 minutes for 8 epochs on 1 A100 GPU. Subsequent predictions for inference can be run in approximately 1 minute. All software was tested on CentOS 8 with an AMD EPYC 7302 16-Core Processor and 4x A100 SXM 40 GB GPUs.
