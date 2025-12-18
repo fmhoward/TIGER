@@ -2,7 +2,7 @@
 SlideFlow - TIGER (<b>T</b>ransformer-based h<b>I</b>stology-driven <b>G</b>ene <b>E</b>xpression <b>R</b>egressor) is a pipeline to accurately reconstruct gene expression and gene expression signatures from digital histology. These histology derived gene expression signatures can be used to predict prognosis, chemotherapy response, and response to specific therapies.
 
 
-## Attribution
+## Attribution and Licensing
 If you use this code in your work or find it helpful, please consider citing our paper in <a href='https://www.medrxiv.org/content/10.1101/2025.08.25.25334393v1'>medRxiv</a>.
 ```
 @misc{howard_integration_2025,
@@ -21,6 +21,7 @@ If you use this code in your work or find it helpful, please consider citing our
 Pages: 2025.08.25.25334393},
 }
 
+This code is available under a Creative Commons License (Attribution-NonCommercial-NoDerivs 4.0 International), CC BY-NC-ND 4.0, as described at http://creativecommons.org/licenses/by-nc-nd/4.0/
 ```
 
 ## Installation
