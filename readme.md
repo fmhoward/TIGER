@@ -39,6 +39,18 @@ Requirements:
 
 For full environment used for model testing please see the environment.yml file
 
+## Optimized Feature Extractors for TIGER
+We have continued to evaluate feature extractors with improved performance to underly the gene signature prediction of our TIGER pipeline. Below are benchmarks for gene signature prediction in TCGA on 5-fold cross-validation.
+| Foundation Model | r (summary) | MSE |
+|--------------|-------------|-----|
+| CTP | 0.523 (0.398 – 0.609) | 0.713 (0.608 – 0.828) |
+| HistoSSL | 0.521 (0.424 – 0.594) | 0.733 (0.618 – 0.822) |
+| UNI | 0.545 (0.428 – 0.620) | 0.713 (0.594 – 0.812) |
+| UNI2 | 0.555 (0.435 – 0.642) | 0.693 (0.566 – 0.803) |
+| VIRCHOW | 0.530 (0.406 – 0.612) | 0.713 (0.595 – 0.823) |
+| Prov-GigaPath (Tile-Level) | 0.527 (0.414 – 0.609) | 0.730 (0.594 – 0.830) |
+| Prov-GigaPath (Slide-level) | 0.193 (0.138 – 0.227) | 0.965 (0.881 – 1.001) |
+
 ## Comparison of TIGER to Recent Methodologies for Gene Expression Prediction. 
 Visualizing synthetic histology from a feature vector is easily performed with HistoXGAN; the included models allow for visualization of CTransPath and RetCCL feature vectors.
 Trained models used in this work are available at https://doi.org/10.5281/zenodo.10892176. The trained HistoXGAN models alone can be downloaded from the FINAL_MODELS.rar folder in this Zenodo repository; or the trained models in conjunction with other supplemental data used to evaluate HistoXGAN can be downloaded from the HistoXGAN.rar folder.
